@@ -1,0 +1,7 @@
+.root {
+	display: contents;
+
+	:global(.ant-app) {
+		display: contents;
+	}
+}

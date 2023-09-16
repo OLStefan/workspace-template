@@ -1,0 +1,134 @@
+name: Check & Merge
+
+on:
+  push:
+    branches:
+      - 'develop'
+
+env:
+  BRANCH_NAME: staging
+
+jobs:
+  setup:
+    name: Setup
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    outputs:
+      setupDiff: ${{steps.filter.outputs.setup}}
+      codeDiff: ${{steps.filter.outputs.code}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.ref }}
+          fetch-depth: 0
+
+      - name: Setup git
+        run: |
+          git config --global user.email "${GITHUB_ACTOR}"
+          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      - name: remove old staging, if existing
+        continue-on-error: true
+        run: |
+          if git ls-remote | grep -i ${{ env.BRANCH_NAME }}; then git push -d origin ${{ env.BRANCH_NAME }}; fi 
+
+      - name: Push staging branch
+        run: |
+          git checkout -b ${{ env.BRANCH_NAME }}
+          git merge origin/${{ github.event.repository.default_branch }}
+          git push --set-upstream origin ${{ env.BRANCH_NAME }}
+
+      - name: Check for changes source files
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            setup:
+              - '.prettierrc'
+              - '.eslintrc'
+              - '.stylelintrc'
+              - 'tsconfig.json'
+              - 'package.json'
+              - 'yarn.lock'
+            code:
+              - 'src/**'  
+              - 'yarn.lock'
+
+  check:
+    name: Static Checks
+    concurrency: ci-${{ github.ref }}
+    needs: setup
+    if: needs.setup.outputs.setupDiff == 'true' || needs.setup.outputs.codeDiff == 'true' 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.BRANCH_NAME }}
+
+      - name: Setpup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install --immutable
+
+      - name: Static Checks
+        run: yarn check:all
+
+  merge:
+    name: Merge to main
+    concurrency: ci-${{ github.ref }}
+    needs: check
+    if: always() && ! cancelled() && needs.check.result != 'failure'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.BRANCH_NAME }}
+
+      - name: create pull request
+        id: open-pr
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: ${{ github.event.repository.default_branch }}
+          pr_title: '[Automated] Merge ${{ github.ref_name }} into ${{ github.event.repository.default_branch }}'
+          pr_label: 'pipeline'
+          pr_body: 'Automated Pull Request'
+
+      - name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.PR_TOKEN }}
+          number: ${{ steps.open-pr.outputs.pr_number }}
+          method: merge
+
+  cleanup:
+    name: CleanUp
+    concurrency: ci-${{ github.ref }}
+    needs: merge
+    if: always() && !cancelled() && needs.merge.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.ref }}
+          fetch-depth: 0
+
+      - name: Push staging branch
+        run: |
+          git rebase origin/${{ github.event.repository.default_branch }}
+          git push
+
+      - name: Cleanup
+        run: |
+          git config --global user.email "${GITHUB_ACTOR}"
+          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com"
+          git remote update
+          git fetch
+          git push -d origin ${{ env.BRANCH_NAME }}

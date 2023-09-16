@@ -1,0 +1,12 @@
+# Caches
+node_modules
+dist
+.next
+.swc
+
+# Project related
+.vscode
+*.code-workspace
+.git
+.gitignore
+.github

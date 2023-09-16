@@ -1,0 +1,23 @@
+{
+	"folders": [{ "path": "." }],
+	"settings": {
+		"editor.insertSpaces": false,
+		"[javascriptreact]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[json]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"workbench.tree.indent": 16,
+		"files.eol": "\n",
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"files.exclude": {
+			"**/node_modules": false
+		},
+		"jest.jestCommandLine": "yarn test",
+		"jest.rootPath": ""
+	},
+	"extensions": {
+		"recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+	}
+}
