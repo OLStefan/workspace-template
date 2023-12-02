@@ -7,7 +7,7 @@
 		"node": "^18.17"
 	},
 	"scripts": {
-		"develop": "yarn install && yarn pre:dev && next dev",
+		"develop": "node --loader ts-node/esm src/server.ts",
 		"build": "yarn pre:build && next build",
 		"build:standalone": "cp next.config.js next.config.bak.js && cp next-standalone.config.js next.config.js && yarn build; mv next.config.bak.js next.config.js",
 		"build:docker": "docker build . -t workspace-template",
@@ -15,7 +15,7 @@
 		"clean-server-actions": "find src/**/*.ts | xargs grep -il \"'use server';\" | xargs -r sed -i \"s/'use server';//g\"",
 		"copy-static": "cp -r .next/static .next/standalone/.next",
 		"copy-public": "cp -r public .next/standalone/",
-		"start": "next start",
+		"start": "cross-env NODE_ENV=production yarn develop",
 		"start:docker": "docker run -d -p 3000:3000 workspace-template",
 		"clean": "rm -rf out node_modules .next",
 		"test": "jest",
@@ -44,6 +44,8 @@
 		"react": "~18.2.0",
 		"react-dom": "~18.2.0",
 		"react-markdown": "~9.0.1",
+		"socket.io": "^4.7.2",
+		"socket.io-client": "^4.7.2",
 		"use-updating-callbacks": "~1.1.0"
 	},
 	"devDependencies": {

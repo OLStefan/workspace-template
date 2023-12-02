@@ -4,9 +4,10 @@ import './globals.css';
 import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import AntHandling from './(setup)/AntHandling';
+import Socket from './Socket';
 
 export const metadata: Metadata = {
-	title: 'A5E Character Creator',
+	title: 'PLACEHOLDER PLEASE CHANGE',
 	icons: `./favicon.ico`,
 };
 
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<head />
 			<body className={inter.className}>
+				<Socket />
 				<AntHandling>{children}</AntHandling>
 			</body>
 		</html>
