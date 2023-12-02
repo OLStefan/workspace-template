@@ -26,7 +26,7 @@
 		"check:all": "yarn check:types && yarn check:style && yarn check:lint && yarn test",
 		"fix:style": "prettier --write ./src",
 		"pre:dev": "tsx ./src/scripts/genAntdCss.ts",
-		"pre:build": "cross-env NODE_ENV=production tsx ./src/scripts/genAntdCss.ts"
+		"pre:build": "cross-env NODE_ENV=production yarn pre:dev"
 	},
 	"browserslist": "> 0.5%, last 2 versions, not dead",
 	"dependencies": {
