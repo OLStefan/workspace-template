@@ -18,7 +18,7 @@ module.exports = postcss.plugin('postcss-plugin-namespace-wrapper', function () 
 				return rule;
 			}
 
-			if (specailTest(rule)) {
+			if (isInKeyframe(rule)) {
 				return rule;
 			}
 
@@ -75,7 +75,7 @@ function classMatchesTest(clss, test) {
  * @param {object} rule css rule
  * @return {boolean} if the selector couldn't be added namespace
  */
-function specailTest(rule) {
+function isInKeyframe(rule) {
 	if (rule.parent && rule.parent.name && rule.parent.name.indexOf('keyframes') > -1) {
 		return true;
 	}
