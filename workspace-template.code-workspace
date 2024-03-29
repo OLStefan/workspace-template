@@ -15,7 +15,8 @@
 			"**/node_modules": false
 		},
 		"jest.jestCommandLine": "yarn test",
-		"jest.rootPath": ""
+		"jest.rootPath": "",
+		"files.trimTrailingWhitespace": true,
 	},
 	"extensions": {
 		"recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]

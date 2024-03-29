@@ -1,21 +1,29 @@
 {
 	"extends": [
-		"eslint-config-prettier",
+		"eslint:recommended",
+		"plugin:react/recommended",
 		"next/core-web-vitals",
 		"plugin:@typescript-eslint/recommended-type-checked",
 		"plugin:@typescript-eslint/stylistic-type-checked",
+		"prettier"
 	],
-	"plugins": ["testing-library", "@typescript-eslint"],
+	"plugins": ["testing-library", "@typescript-eslint", "react"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"project": true,
 		"tsconfigRootDir": "__dirname",
+		"ecmaFeatures": {
+			"jsx": true
+		}
 	},
 	"overrides": [
 		// Only uses Testing Library lint rules in test files
 		{
-			"files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
-			"extends": ["plugin:testing-library/react"],
-		},
-	],
+			"files": [
+				"**/__tests__/**/*.[jt]s?(x)",
+				"**/?(*.)+(spec|test).[jt]s?(x)"
+			],
+			"extends": ["plugin:testing-library/react"]
+		}
+	]
 }
