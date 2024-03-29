@@ -1,21 +1,14 @@
 {
 	"extends": [
 		"eslint:recommended",
-		"plugin:react/recommended",
-		"plugin:react-hooks/recommended",
 		"plugin:@typescript-eslint/recommended-type-checked",
 		"plugin:@typescript-eslint/stylistic-type-checked",
 		"next/core-web-vitals",
 		"prettier"
 	],
 	"plugins": ["testing-library", "@typescript-eslint", "react"],
-	"parser": "@typescript-eslint/parser",
-	"parserOptions": {
-		"project": true,
-		"tsconfigRootDir": "__dirname",
-		"ecmaFeatures": {
-			"jsx": true
-		}
+	"rules": {
+		"@typescript-eslint/naming-convention": ["warn"]
 	},
 	"overrides": [
 		// Only uses Testing Library lint rules in test files
@@ -25,6 +18,27 @@
 				"**/?(*.)+(spec|test).[jt]s?(x)"
 			],
 			"extends": ["plugin:testing-library/react"]
+		},
+		// Allow Pascal functions in jsx files
+		{
+			"files": ["**/.*\\.[jt]sx"],
+			"rules": {
+				"@typescript-eslint/naming-convention": ["warn"]
+			}
+		},
+		// Overwrite next config to enable type checked linting
+		{
+			"files": ["**/*.ts?(x)"],
+			"parser": "@typescript-eslint/parser",
+			"parserOptions": {
+				"sourceType": "module",
+				"project": true,
+				"tsconfigRootDir": "__dirname",
+				"ecmaFeatures": {
+					"jsx": true
+				},
+				"warnOnUnsupportedTypeScriptVersion": true
+			}
 		}
 	]
 }
