@@ -25,6 +25,8 @@
 		"check:lint": "next lint && stylelint src/**/*.css",
 		"check:all": "yarn check:types && yarn check:style && yarn check:lint && yarn test",
 		"fix:style": "prettier --write ./src",
+		"fix:lint": "next lint --fix; stylelint --fix src/**/*.css",
+		"fix:all": "yarn fix:style && yarn fix:lint",
 		"pre:dev": "tsx ./src/scripts/genAntdCss.ts",
 		"pre:build": "cross-env NODE_ENV=production yarn pre:dev"
 	},

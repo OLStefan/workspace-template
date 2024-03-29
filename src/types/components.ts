@@ -3,7 +3,7 @@ import { Primitive } from 'type-fest';
 
 export type DataAttributes = Record<
 	`data-${string}`,
-	Exclude<Primitive, Symbol>
+	Exclude<Primitive, symbol>
 >;
 
 export interface BaseProps extends DataAttributes {

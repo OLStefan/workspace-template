@@ -10,30 +10,33 @@ const port = 3000;
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
-app.prepare().then(() => {
-	const server = createServer(async (req, res) => {
-		try {
+app
+	.prepare()
+	.then(() => {
+		const server = createServer((req, res) => {
 			// Be sure to pass `true` as the second argument to `url.parse`.
 			// This tells it to parse the query portion of the URL.
 			const parsedUrl = parse(req.url!, true);
-			await handle(req, res, parsedUrl);
-		} catch (err) {
-			console.error('Error occurred handling', req.url, err);
-			res.statusCode = 500;
-			res.end('internal server error');
-		}
-	});
-	server.once('error', (err) => {
-		console.error(err);
-		process.exit(1);
-	});
+			handle(req, res, parsedUrl).catch((err: unknown) => {
+				console.error('Error occurred handling', req.url, err);
+				res.statusCode = 500;
+				res.end('internal server error');
+			});
+		});
+		server.once('error', (err) => {
+			console.error(err);
+			process.exit(1);
+		});
 
-	socketStuff(server);
+		socketStuff(server);
 
-	server.listen(port, () => {
-		console.log(`> Ready on http://${hostname}:${port}`);
+		server.listen(port, () => {
+			console.log(`> Ready on http://${hostname}:${port}`);
+		});
+	})
+	.catch((error: unknown) => {
+		console.error('Failes to start server', { error });
 	});
-});
 
 function socketStuff(httpServer: Server) {
 	const io = new SocketServer(httpServer, {

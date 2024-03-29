@@ -1,12 +1,10 @@
 'use client';
 
 import useMount from '@/hooks/useMount';
-import { IAnyModelType, Instance, SnapshotIn } from 'mobx-state-tree';
+import { IAnyType, Instance, SnapshotIn } from 'mobx-state-tree';
 import { Context, ReactNode, useState } from 'react';
 
-export interface StaticExportProviderHandlerProps<
-	TModel extends IAnyModelType,
-> {
+export interface StaticExportProviderHandlerProps<TModel extends IAnyType> {
 	Context: Context<Instance<TModel>>;
 	initialValue: SnapshotIn<TModel> | null;
 	loadFunction: (
@@ -15,7 +13,7 @@ export interface StaticExportProviderHandlerProps<
 	children: ReactNode;
 	model: TModel;
 }
-export function StaticExportProviderHandler<TModel extends IAnyModelType>({
+export function StaticExportProviderHandler<TModel extends IAnyType>({
 	Context,
 	initialValue,
 	loadFunction,
@@ -33,7 +31,7 @@ export function StaticExportProviderHandler<TModel extends IAnyModelType>({
 	return <Context.Provider value={instance}>{children}</Context.Provider>;
 }
 
-function useLoadedValue<TModel extends IAnyModelType>({
+function useLoadedValue<TModel extends IAnyType>({
 	initialValue,
 	loadFunction,
 }: Pick<
@@ -44,11 +42,14 @@ function useLoadedValue<TModel extends IAnyModelType>({
 
 	useMount(() => {
 		if (initialValue === null) {
-			loadFunction(true).then((v) => {
-				setValue(v);
-			});
+			loadFunction(true)
+				.then((v) => {
+					setValue(v);
+				})
+				.catch((error) => void error);
 		}
 	});
 
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 	return value;
 }
