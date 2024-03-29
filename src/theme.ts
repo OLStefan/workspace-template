@@ -1,6 +1,6 @@
 import { ThemeConfig } from 'antd';
 
-export const themeConfig: ThemeConfig = {
+export const THEME_CONFIG: ThemeConfig = {
 	token: {
 		fontSize: 14,
 		colorPrimary: '#f48847',

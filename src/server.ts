@@ -3,15 +3,14 @@ import next from 'next';
 import { Server as SocketServer } from 'socket.io';
 import { parse } from 'url';
 
-const dev = process.env.NODE_ENV !== 'production';
-const hostname = 'localhost';
-const port = 3000;
+const IS_DEV_MODE = process.env.NODE_ENV !== 'production';
+const HOSTNAME = 'localhost';
+const PORT = 3000;
 // when using middleware `hostname` and `port` must be provided below
-const app = next({ dev, hostname, port });
-const handle = app.getRequestHandler();
+const NEXT_SERVER = next({ dev: IS_DEV_MODE, hostname: HOSTNAME, port: PORT });
+const handle = NEXT_SERVER.getRequestHandler();
 
-app
-	.prepare()
+NEXT_SERVER.prepare()
 	.then(() => {
 		const server = createServer((req, res) => {
 			// Be sure to pass `true` as the second argument to `url.parse`.
@@ -30,8 +29,8 @@ app
 
 		socketStuff(server);
 
-		server.listen(port, () => {
-			console.log(`> Ready on http://${hostname}:${port}`);
+		server.listen(PORT, () => {
+			console.log(`> Ready on http://${HOSTNAME}:${PORT}`);
 		});
 	})
 	.catch((error: unknown) => {

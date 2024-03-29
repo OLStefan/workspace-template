@@ -8,7 +8,60 @@
 	],
 	"plugins": ["testing-library", "@typescript-eslint", "react"],
 	"rules": {
-		"@typescript-eslint/naming-convention": ["warn"]
+		"@typescript-eslint/naming-convention": [
+			"warn",
+			{
+				"selector": "default",
+				"format": ["strictCamelCase"]
+			},
+
+			{
+				"selector": "variableLike",
+				"format": ["strictCamelCase"]
+			},
+			{
+				"selector": "variable",
+				"modifiers": ["global", "const"],
+				"format": ["UPPER_CASE"]
+			},
+			{
+				"selector": "variable",
+				"modifiers": ["global", "const"],
+				"types": ["function"],
+				"format": ["strictCamelCase"]
+			},
+			{
+				"selector": "parameter",
+				"format": ["strictCamelCase"],
+				"leadingUnderscore": "allow"
+			},
+			{
+				"selector": "function",
+				"format": ["UPPER_CASE"],
+				"filter": "^(?:GET|POST)$"
+			},
+
+			{
+				"selector": "objectLiteralProperty",
+				"filter": "^--",
+				"format": null
+			},
+
+			{
+				"selector": "typeLike",
+				"format": ["StrictPascalCase"]
+			},
+			{
+				"selector": "typeParameter",
+				"format": ["StrictPascalCase"],
+				"prefix": ["T"]
+			},
+
+			{
+				"selector": "import",
+				"format": ["strictCamelCase", "UPPER_CASE"]
+			}
+		]
 	},
 	"overrides": [
 		// Only uses Testing Library lint rules in test files
@@ -18,13 +71,6 @@
 				"**/?(*.)+(spec|test).[jt]s?(x)"
 			],
 			"extends": ["plugin:testing-library/react"]
-		},
-		// Allow Pascal functions in jsx files
-		{
-			"files": ["**/.*\\.[jt]sx"],
-			"rules": {
-				"@typescript-eslint/naming-convention": ["warn"]
-			}
 		},
 		// Overwrite next config to enable type checked linting
 		{
@@ -38,6 +84,70 @@
 					"jsx": true
 				},
 				"warnOnUnsupportedTypeScriptVersion": true
+			}
+		},
+		// Allow Pascal functions in jsx files
+		{
+			"files": ["**/*.[jt]sx"],
+			"rules": {
+				"@typescript-eslint/naming-convention": [
+					"warn",
+					{
+						"selector": "default",
+						"format": ["strictCamelCase"]
+					},
+
+					{
+						"selector": "variableLike",
+						"format": ["strictCamelCase"]
+					},
+					{
+						"selector": "variable",
+						"modifiers": ["global", "const"],
+						"format": ["UPPER_CASE"]
+					},
+					{
+						"selector": "variable",
+						"modifiers": ["global", "const"],
+						"types": ["function"],
+						"format": ["strictCamelCase", "StrictPascalCase"]
+					},
+					{
+						"selector": "parameter",
+						"format": ["strictCamelCase"],
+						"leadingUnderscore": "allow"
+					},
+					{
+						"selector": "function",
+						"format": ["strictCamelCase", "StrictPascalCase"]
+					},
+					{
+						"selector": "function",
+						"format": ["UPPER_CASE"],
+						"filter": "^(?:GET|POST)$"
+					},
+
+					{
+						"selector": "objectLiteralProperty",
+						"filter": "^--",
+						"format": null
+					},
+
+					{
+						"selector": "typeLike",
+						"format": ["StrictPascalCase"]
+					},
+					{
+						"selector": "typeParameter",
+						"format": ["StrictPascalCase"],
+						"prefix": ["T"]
+					},
+
+					{
+						"selector": "import",
+						"format": ["strictCamelCase", "StrictPascalCase", "UPPER_CASE"]
+					}
+				]
 			}
 		}
 	]

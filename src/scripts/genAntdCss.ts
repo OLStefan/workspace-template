@@ -2,12 +2,12 @@ import { extractStyle } from '@ant-design/static-style-extract';
 import { ConfigProvider } from 'antd';
 import fs from 'fs';
 import { createElement } from 'react';
-import { themeConfig } from '../theme';
+import { THEME_CONFIG } from '../theme';
 
-const outputPath = './src/scripts/antd.min.css';
+const OUTPUT_PATH = './src/scripts/antd.min.css';
 
-const css = extractStyle((node) =>
-	createElement(ConfigProvider, { theme: themeConfig }, node),
+const CSS = extractStyle((node) =>
+	createElement(ConfigProvider, { theme: THEME_CONFIG }, node),
 );
 
-fs.writeFileSync(outputPath, css);
+fs.writeFileSync(OUTPUT_PATH, CSS);

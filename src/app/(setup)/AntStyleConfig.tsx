@@ -2,7 +2,7 @@
 
 import { ConfigProvider, theme } from 'antd';
 import { CSSProperties, ReactNode } from 'react';
-import { themeConfig } from '../../theme';
+import { THEME_CONFIG } from '../../theme';
 import styles from './setup.module.css';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export default function AntStyleConfig({ children }: Props) {
 	return (
-		<ConfigProvider theme={themeConfig}>
+		<ConfigProvider theme={THEME_CONFIG}>
 			<AntStyleInjector>{children}</AntStyleInjector>
 		</ConfigProvider>
 	);

@@ -5,7 +5,7 @@ import { IAnyType, Instance, SnapshotIn } from 'mobx-state-tree';
 import { Context, ReactNode, useState } from 'react';
 
 export interface StaticExportProviderHandlerProps<TModel extends IAnyType> {
-	Context: Context<Instance<TModel>>;
+	context: Context<Instance<TModel>>;
 	initialValue: SnapshotIn<TModel> | null;
 	loadFunction: (
 		executedOnClient: boolean,
@@ -14,7 +14,7 @@ export interface StaticExportProviderHandlerProps<TModel extends IAnyType> {
 	model: TModel;
 }
 export function StaticExportProviderHandler<TModel extends IAnyType>({
-	Context,
+	context,
 	initialValue,
 	loadFunction,
 	children,
@@ -28,7 +28,7 @@ export function StaticExportProviderHandler<TModel extends IAnyType>({
 
 	const instance = model.create(value);
 
-	return <Context.Provider value={instance}>{children}</Context.Provider>;
+	return <context.Provider value={instance}>{children}</context.Provider>;
 }
 
 function useLoadedValue<TModel extends IAnyType>({
