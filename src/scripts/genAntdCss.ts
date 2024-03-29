@@ -6,6 +6,8 @@ import { themeConfig } from '../theme';
 
 const outputPath = './src/scripts/antd.min.css';
 
-const css = extractStyle((node) => createElement(ConfigProvider, { theme: themeConfig }, node));
+const css = extractStyle((node) =>
+	createElement(ConfigProvider, { theme: themeConfig }, node),
+);
 
 fs.writeFileSync(outputPath, css);
