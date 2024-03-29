@@ -2,7 +2,21 @@
 node_modules
 dist
 .next
+.next-server
 .swc
+tsconfig.tsbuildinfo
+
+# Misc files
+Dockerfile
+.eslintrc
+.eslintignore
+.prettierignore
+.prettierrc
+.stylelintignore
+.stylelintrc
+jest.config.js
+
+
 
 # Project related
 .vscode

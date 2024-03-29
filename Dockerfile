@@ -22,6 +22,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN yarn build:standalone
+RUN yarn build:server
 
 # Production image, copy all the files and run next
 FROM base AS runner
@@ -40,5 +41,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Custom server
+COPY --from=builder --chown=nextjs:nodejs /app/.next-server/server.js ./server.cjs
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/ ./node_modules/
+
 USER nextjs
-CMD ["node", "server.js"]
+CMD ["node", "server.cjs"]
