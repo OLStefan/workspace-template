@@ -43,7 +43,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Custom server
 COPY --from=builder --chown=nextjs:nodejs /app/.next-server/server.js ./server.cjs
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/ ./node_modules/
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/next ./node_modules/next
 
 USER nextjs
 CMD ["node", "server.cjs"]

@@ -12,7 +12,7 @@
 		"build:standalone": "cp next.config.js next.config.bak.js && cp next-standalone.config.js next.config.js && yarn build; mv next.config.bak.js next.config.js",
 		"build:docker": "docker build . -t workspace-template",
 		"build:export": "cp next.config.js next.config.bak.js && cp next-static.config.js next.config.js && yarn clean-server-actions && yarn build; mv next.config.bak.js next.config.js",
-		"build:server": "webpack --config ./webpack.config.server.cjs",
+		"build:server": "rm node_modules/next/dist/compiled/@vercel/nft/LICENSE; esbuild src/server.ts --bundle --minify --platform=node --outfile=.next-server/server.js --external:critters --external:@opentelemetry/api --external:react-dom/server-rendering-stub --external:react-server-dom-turbopack --external:react-server-dom-webpack --external:react-dom --external:@swc/core --external:uglify-js --external:pnpapi --external:next",
 		"clean-server-actions": "find src/**/*.ts | xargs grep -il \"'use server';\" | xargs -r sed -i \"s/'use server';//g\"",
 		"copy-static": "cp -r .next/static .next/standalone/.next",
 		"copy-public": "cp -r public .next/standalone/",
@@ -65,6 +65,7 @@
 		"@typescript-eslint/parser": "~7.4.0",
 		"cross-env": "~7.0.3",
 		"csstype": "~3.1.3",
+		"esbuild": "~0.20.2",
 		"eslint": "~8.57.0",
 		"eslint-config-next": "~14.1.4",
 		"eslint-config-prettier": "~9.1.0",
@@ -81,17 +82,13 @@
 		"stylelint-config-css-modules": "~4.4.0",
 		"stylelint-config-standard": "~36.0.0",
 		"ts-jest": "~29.1.2",
-		"ts-loader": "~9.5.1",
 		"ts-node": "~10.9.2",
 		"tslib": "~2.6.2",
 		"tsx": "~4.7.1",
 		"type-fest": "~4.14.0",
 		"typescript": "~5.4.3",
 		"typescript-eslint": "~7.4.0",
-		"typescript-plugin-css-modules": "~5.1.0",
-		"webpack": "5.86.0",
-		"webpack-cli": "~5.1.4",
-		"webpack-node-externals": "~3.0.0"
+		"typescript-plugin-css-modules": "~5.1.0"
 	},
 	"packageManager": "yarn@4.1.1"
 }
