@@ -1,6 +1,3 @@
-/* Based on https://www.npmjs.com/package/postcss-plugin-namespace */
-var postcss = require('postcss');
-
 const ignore = [
 	/:where\(\.css-dev-only-do-not-override-.*\)/,
 	/^\.ant/,
@@ -11,10 +8,15 @@ const ignore = [
 ];
 const prefix = ':not(:global(#\\9))';
 
-module.exports = postcss.plugin('postcss-plugin-namespace-wrapper', function () {
-	return function (root) {
-		root.walkRules(function (rule) {
+const plugin = function () {
+	return {
+		postcssPlugin: 'postcss-plugin-namespace-wrapper',
+		AtRule: function (rule) {
 			if (!rule.selectors) {
+				return rule;
+			}
+
+			if (rule.source.input.file.includes('.moudle.')) {
 				return rule;
 			}
 
@@ -26,15 +28,18 @@ module.exports = postcss.plugin('postcss-plugin-namespace-wrapper', function () 
 				if (classMatchesTest(selector, ignore) || selector.trim().length === 0) {
 					return selector;
 				}
-				if (rule.parent.selector?.startsWith(prefix)) {
+				if (rule.parent.type !== 'root') {
 					return selector;
 				}
 				return `${prefix} ${selector}`;
 			});
 			return rule;
-		});
+		},
 	};
-});
+};
+
+plugin.postcss = true;
+module.exports = plugin;
 
 /**
  * Determine if class passes test
@@ -76,8 +81,5 @@ function classMatchesTest(clss, test) {
  * @return {boolean} if the selector couldn't be added namespace
  */
 function isInKeyframe(rule) {
-	if (rule.parent && rule.parent.name && rule.parent.name.indexOf('keyframes') > -1) {
-		return true;
-	}
-	return false;
+	return rule.parent?.name.indexOf('keyframes') > -1;
 }
