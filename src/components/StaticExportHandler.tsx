@@ -1,11 +1,12 @@
 'use client';
 
 import useMount from '@/hooks/useMount';
-import { IAnyType, Instance, SnapshotIn } from 'mobx-state-tree';
-import { Context, ReactNode, useState } from 'react';
+import type { IAnyType, Instance, SnapshotIn } from 'mobx-state-tree';
+import type { ReactNode } from 'react';
+import { createContext, useState } from 'react';
+import type { ReadonlyDeep } from 'type-fest';
 
 export interface StaticExportProviderHandlerProps<TModel extends IAnyType> {
-	context: Context<Instance<TModel>>;
 	initialValue: SnapshotIn<TModel> | null;
 	loadFunction: (
 		executedOnClient: boolean,
@@ -14,19 +15,21 @@ export interface StaticExportProviderHandlerProps<TModel extends IAnyType> {
 	model: TModel;
 }
 export function StaticExportProviderHandler<TModel extends IAnyType>({
-	context,
 	initialValue,
 	loadFunction,
 	children,
 	model,
-}: StaticExportProviderHandlerProps<TModel>) {
+}: ReadonlyDeep<StaticExportProviderHandlerProps<TModel>>): ReactNode {
+	const [context] = useState(() =>
+		createContext<Instance<TModel | null>>(null),
+	);
 	const value = useLoadedValue({ initialValue, loadFunction });
 
 	if (value === null) {
 		return null;
 	}
 
-	const instance = model.create(value);
+	const instance = model.create(value) as Instance<TModel>;
 
 	return <context.Provider value={instance}>{children}</context.Provider>;
 }
@@ -35,8 +38,8 @@ function useLoadedValue<TModel extends IAnyType>({
 	initialValue,
 	loadFunction,
 }: Pick<
-	StaticExportProviderHandlerProps<TModel>,
-	'loadFunction' | 'initialValue'
+	ReadonlyDeep<StaticExportProviderHandlerProps<TModel>>,
+	'initialValue' | 'loadFunction'
 >): SnapshotIn<TModel> | null {
 	const [value, setValue] = useState(initialValue);
 

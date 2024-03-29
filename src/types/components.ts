@@ -1,5 +1,5 @@
-import { CSSProperties } from 'react';
-import { Primitive } from 'type-fest';
+import type { CSSProperties } from 'react';
+import type { Primitive } from 'type-fest';
 
 export type DataAttributes = Record<
 	`data-${string}`,

@@ -1,13 +1,17 @@
 import { App } from 'antd';
+import type { ReactNode } from 'react';
+import type { ReadonlyDeep } from 'type-fest';
 import AntMessageHandling from './AntMessageHandling';
 import AntRegistry from './AntRegistry';
 import AntStyleConfig from './AntStyleConfig';
 
-interface Props {
-	children: React.ReactNode;
+export interface AntHandlingProps {
+	children: ReactNode;
 }
 
-export default function AntHandling({ children }: Props) {
+export default function AntHandling({
+	children,
+}: ReadonlyDeep<AntHandlingProps>): ReactNode {
 	return (
 		<AntRegistry>
 			<AntStyleConfig>

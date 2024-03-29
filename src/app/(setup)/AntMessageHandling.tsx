@@ -12,9 +12,9 @@ let modal: ModalStaticFunctions;
 
 export default memo(function AntMessageHandling() {
 	const staticFunction = App.useApp();
-	message = staticFunction.message;
+	({ message } = staticFunction);
+	({ notification } = staticFunction);
 	modal = { ...staticFunction.modal, warn: staticFunction.modal.warning };
-	notification = staticFunction.notification;
 
 	return null;
 });

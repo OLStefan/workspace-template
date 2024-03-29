@@ -1,8 +1,10 @@
 import '../scripts/antd.min.css';
 import './globals.css';
 
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import type { ReactNode } from 'react';
+import type { ReadonlyDeep } from 'type-fest';
 import AntHandling from './(setup)/AntHandling';
 import Socket from './Socket';
 
@@ -16,9 +18,9 @@ const INTER = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
 	children,
-}: {
-	children: React.ReactNode;
-}) {
+}: ReadonlyDeep<{
+	children: ReactNode;
+}>): ReactNode {
 	return (
 		<html lang="en">
 			<head />

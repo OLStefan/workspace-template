@@ -1,6 +1,8 @@
-import { Server, createServer } from 'http';
+import type { Server } from 'http';
+import { createServer } from 'http';
 import next from 'next';
 import { Server as SocketServer } from 'socket.io';
+import type { ReadonlyDeep } from 'type-fest';
 import { parse } from 'url';
 
 const IS_DEV_MODE = process.env.NODE_ENV !== 'production';
@@ -24,6 +26,7 @@ NEXT_SERVER.prepare()
 		});
 		server.once('error', (err) => {
 			console.error(err);
+			// eslint-disable-next-line @typescript-eslint/no-magic-numbers
 			process.exit(1);
 		});
 
@@ -37,7 +40,7 @@ NEXT_SERVER.prepare()
 		console.error('Failes to start server', { error });
 	});
 
-function socketStuff(httpServer: Server) {
+function socketStuff(httpServer: ReadonlyDeep<Server>) {
 	const io = new SocketServer(httpServer, {
 		// Socket.IO options
 	});

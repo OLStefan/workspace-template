@@ -2,13 +2,16 @@
 
 import { StyleProvider, createCache, extractStyle } from '@ant-design/cssinjs';
 import { useServerInsertedHTML } from 'next/navigation';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import type { ReadonlyDeep } from 'type-fest';
 
-interface Props {
+interface AntRegistryProps {
 	children: ReactNode;
 }
 
-export const AntRegistry = ({ children }: Props) => {
+export default function AntRegistry({
+	children,
+}: ReadonlyDeep<AntRegistryProps>): ReactNode {
 	const cache = createCache();
 	useServerInsertedHTML(() => (
 		<style
@@ -18,4 +21,4 @@ export const AntRegistry = ({ children }: Props) => {
 		/>
 	));
 	return <StyleProvider cache={cache}>{children}</StyleProvider>;
-};
+}

@@ -1,15 +1,18 @@
 'use client';
 
 import { ConfigProvider, theme } from 'antd';
-import { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import type { ReadonlyDeep } from 'type-fest';
 import { THEME_CONFIG } from '../../theme';
 import styles from './setup.module.css';
 
-interface Props {
+export interface AntStyleConfigProps {
 	children: ReactNode;
 }
 
-export default function AntStyleConfig({ children }: Props) {
+export default function AntStyleConfig({
+	children,
+}: ReadonlyDeep<AntStyleConfigProps>): ReactNode {
 	return (
 		<ConfigProvider theme={THEME_CONFIG}>
 			<AntStyleInjector>{children}</AntStyleInjector>
@@ -17,7 +20,7 @@ export default function AntStyleConfig({ children }: Props) {
 	);
 }
 
-function AntStyleInjector({ children }: Props) {
+function AntStyleInjector({ children }: ReadonlyDeep<AntStyleConfigProps>) {
 	const { token } = theme.useToken();
 	const antVariables = {
 		'--spacing-small': token.margin,
