@@ -6,7 +6,7 @@
 		"next/core-web-vitals",
 		"prettier"
 	],
-	"plugins": ["testing-library", "@typescript-eslint", "react"],
+	"plugins": ["testing-library", "@typescript-eslint", "react", "check-file"],
 	"rules": {
 		// Overwriten by typescript-eslint rules
 		"default-param-last": "off",
@@ -70,6 +70,18 @@
 		"@typescript-eslint/strict-boolean-expressions": "warn",
 		"@typescript-eslint/switch-exhaustiveness-check": "error",
 		"@typescript-eslint/return-await": "error",
+
+		"check-file/folder-naming-convention": [
+			"error",
+			{ "src/**/": "NEXT_JS_APP_ROUTER_CASE" }
+		],
+		"check-file/filename-naming-convention": [
+			"error",
+			{
+				"src/**/!({page,layout,template}).{jsx,tsx}": "PASCAL_CASE",
+				"src/**/*.{js,ts}": "CAMEL_CASE"
+			}
+		],
 
 		"@typescript-eslint/naming-convention": [
 			"warn",
