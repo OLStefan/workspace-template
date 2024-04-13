@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/sort-type-constituents */
 import '../scripts/antd.min.css';
 import './globals.css';
 
@@ -16,11 +17,13 @@ export const metadata: Metadata = {
 
 const INTER = Inter({ subsets: ['latin'] });
 
+export interface RootLayoutProps {
+	children: ReactNode;
+}
+
 export default function RootLayout({
 	children,
-}: ReadonlyDeep<{
-	children: ReactNode;
-}>): ReactNode {
+}: ReadonlyDeep<RootLayoutProps>): ReactNode {
 	return (
 		<html lang="en">
 			<head />
