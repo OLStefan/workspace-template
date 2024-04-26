@@ -1,5 +1,9 @@
 {
-	"extends": ["stylelint-config-recommended", "stylelint-config-css-modules"],
+	"extends": [
+		"stylelint-config-recommended",
+		"stylelint-config-css-modules",
+		"stylelint-config-tailwindcss"
+	],
 	"rules": {
 		"declaration-property-value-no-unknown": true,
 		"declaration-no-important": true
