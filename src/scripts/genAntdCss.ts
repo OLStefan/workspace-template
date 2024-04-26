@@ -1,6 +1,6 @@
 import { extractStyle } from '@ant-design/static-style-extract';
 import { ConfigProvider } from 'antd';
-import fs from 'fs';
+import { writeFileSync } from 'fs';
 import { createElement } from 'react';
 import { THEME_CONFIG } from '../theme';
 
@@ -10,4 +10,4 @@ const CSS = extractStyle((node) =>
 	createElement(ConfigProvider, { theme: THEME_CONFIG }, node),
 );
 
-fs.writeFileSync(OUTPUT_PATH, CSS);
+writeFileSync(OUTPUT_PATH, CSS);
